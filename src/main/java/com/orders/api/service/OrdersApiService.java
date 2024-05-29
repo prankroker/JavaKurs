@@ -63,7 +63,6 @@ public class OrdersApiService
         order.setPeople_count(orderCreateDTO.getPeople_count());
         order.setStatus(false);
 
-        //don't like this part
         orderRepository.save(order);
 
         return Mapper.mapToOrderHistory(order);
@@ -112,7 +111,6 @@ public class OrdersApiService
 
     public ResponseEntity<String> confirmOrder(Long id) {
         Optional<Order> potentialOrder = orderRepository.findById(id);
-        //potentially we don't need this if statements
         if (potentialOrder.isEmpty()) {
             return new ResponseEntity<>("The order with this ID does not exist!", HttpStatus.BAD_REQUEST);
         }

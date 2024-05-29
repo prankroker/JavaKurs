@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @Transactional
 @TestPropertySource(locations = {"classpath:testApp.properties"})
 class OrdersApiIT {
@@ -32,11 +31,11 @@ class OrdersApiIT {
 	final RequestPostProcessor postProcessor = SecurityMockMvcRequestPostProcessors
 			.httpBasic("email@gmail.com", "1234");
 	final String createUser = "INSERT INTO user(user_id, name, email, password, role) " +
-			"VALUES (1, 'vadim', 'email@gmail.com', '$2a$10$Hzdg8upvCxY8wqZAyq79Ou1szV6sS6Xy55GmDyOqgz8ZKbMsklZ1C', 0)";
+			"VALUES (1, 'John', 'email@gmail.com', '$2a$10$Hzdg8upvCxY8wqZAyq79Ou1szV6sS6Xy55GmDyOqgz8ZKbMsklZ1C', 0)";
 	final String createWaiter =  "INSERT INTO user(user_id, name, email, password, role) " +
-			"VALUES (1, 'vadim', 'email@gmail.com', '$2a$10$Hzdg8upvCxY8wqZAyq79Ou1szV6sS6Xy55GmDyOqgz8ZKbMsklZ1C', 1)";
+			"VALUES (1, 'John', 'email@gmail.com', '$2a$10$Hzdg8upvCxY8wqZAyq79Ou1szV6sS6Xy55GmDyOqgz8ZKbMsklZ1C', 1)";
 	final String createAdmin =  "INSERT INTO user(user_id, name, email, password, role) " +
-			"VALUES (1, 'vadim', 'email@gmail.com', '$2a$10$Hzdg8upvCxY8wqZAyq79Ou1szV6sS6Xy55GmDyOqgz8ZKbMsklZ1C', 2)";
+			"VALUES (1, 'John', 'email@gmail.com', '$2a$10$Hzdg8upvCxY8wqZAyq79Ou1szV6sS6Xy55GmDyOqgz8ZKbMsklZ1C', 2)";
 
 	@Test
 	@DisplayName("Test for POST /register endpoint")
@@ -45,7 +44,7 @@ class OrdersApiIT {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
                         {
-                        "name":"vadim",
+                        "name":"John",
                         "email":"email@gmail.com",
                         "password":"1234",
                         "role":"USER"
@@ -62,7 +61,7 @@ class OrdersApiIT {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
                         {
-                        "name":"vadim",
+                        "name":"John",
                         "email":"email@gmail.com",
                         "password":"1234",
                         "role":"godUser"
@@ -80,7 +79,7 @@ class OrdersApiIT {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
                         {
-                        "name":"vadim",
+                        "name":"John",
                         "email":"email@gmail.com",
                         "password":"1234",
                         "role":"user"
@@ -135,7 +134,7 @@ class OrdersApiIT {
 		var requestBuilder = get("/users").with(postProcessor);
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.[0].name").value("vadim"))
+				.andExpect(jsonPath("$.[0].name").value("John"))
 				.andExpect(jsonPath("$.[0].email").value("email@gmail.com"))
 				.andExpect(jsonPath("$.[0].password")
 						.value("$2a$10$Hzdg8upvCxY8wqZAyq79Ou1szV6sS6Xy55GmDyOqgz8ZKbMsklZ1C"))
@@ -192,7 +191,7 @@ class OrdersApiIT {
 	@DisplayName("Test for GET /orders/toConfirm")
 	@Sql(statements = {createWaiter,
 			"INSERT INTO user(user_id, name, email, password, role) " +
-					"VALUES (2, 'vadim', 'email1@gmail.com', '1234', 0)",
+					"VALUES (2, 'John', 'email1@gmail.com', '1234', 0)",
 			"INSERT INTO orders(order_id, people_count, status, timestamp, karaoke_id, table_id, user_id) " +
 					"VALUES (1, 2, true, '2024-12-12T12:12:12', null, null, null), (2, 2, false, '2024-12-12T12:12:12', 1, 2, 2)",
 			"UPDATE karaoke SET booked = true WHERE karaoke_id = 1",
@@ -227,7 +226,7 @@ class OrdersApiIT {
 	@DisplayName("Test for POST /order/confirm")
 	@Sql(statements = {createWaiter,
 			"INSERT INTO user(user_id, name, email, password, role) " +
-					"VALUES (2, 'vadim', 'email1@gmail.com', '1234', 0)",
+					"VALUES (2, 'John', 'email1@gmail.com', '1234', 0)",
 			"INSERT INTO orders(order_id, people_count, status, timestamp, karaoke_id, table_id, user_id) " +
 					"VALUES (1, 2, false, '2024-12-12T12:12:12', 1, 2, 2)",
 			"UPDATE karaoke SET booked = true WHERE karaoke_id = 1",
@@ -253,7 +252,7 @@ class OrdersApiIT {
 	@DisplayName("Test for POST /order/confirm(order already confirmed)")
 	@Sql(statements = {createWaiter,
 			"INSERT INTO user(user_id, name, email, password, role) " +
-					"VALUES (2, 'vadim', 'email1@gmail.com', '1234', 0)",
+					"VALUES (2, 'John', 'email1@gmail.com', '1234', 0)",
 			"INSERT INTO orders(order_id, people_count, status, timestamp, karaoke_id, table_id, user_id) " +
 					"VALUES (1, 2, true, '2024-12-12T12:12:12', 1, 2, 2)",
 			"UPDATE karaoke SET booked = true WHERE karaoke_id = 1",
@@ -269,7 +268,7 @@ class OrdersApiIT {
 	@DisplayName("Test for GET /orders")
 	@Sql(statements = {createAdmin,
 			"INSERT INTO user(user_id, name, email, password, role) " +
-					"VALUES (2, 'vadim', 'email1@gmail.com', '1234', 0)",
+					"VALUES (2, 'John', 'email1@gmail.com', '1234', 0)",
 			"INSERT INTO orders(order_id, people_count, status, timestamp, karaoke_id, user_id) " +
 					"VALUES (1, 2, true, '2024-12-12T12:12:12', 1, 2)",
 			"UPDATE karaoke SET booked = true WHERE karaoke_id = 1"})
@@ -300,7 +299,7 @@ class OrdersApiIT {
 	@DisplayName("Test for POST /order/cancel")
 	@Sql(statements = {createAdmin,
 			"INSERT INTO user(user_id, name, email, password, role) " +
-					"VALUES (2, 'vadim', 'email1@gmail.com', '1234', 0)",
+					"VALUES (2, 'John', 'email1@gmail.com', '1234', 0)",
 			"INSERT INTO orders(order_id, people_count, status, timestamp, karaoke_id, user_id) " +
 					"VALUES (1, 2, false, '2024-12-12T12:12:12', 1, 2)",
 			"UPDATE karaoke SET booked = true WHERE karaoke_id = 1"})

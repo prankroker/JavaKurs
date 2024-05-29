@@ -30,8 +30,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/order/confirm").hasAuthority(Role.WAITER.toString())
                         .requestMatchers(HttpMethod.POST,"/order/cancel").hasAuthority(Role.ADMIN.toString())
                         .requestMatchers(HttpMethod.GET, "/orders").hasAuthority(Role.ADMIN.toString())
-                        //.requestMatchers(HttpMethod.GET, "/orders/toConfirm").permitAll() //for tests
-                        //.requestMatchers(HttpMethod.POST, "/order/confirm").permitAll() //for tests
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().denyAll()

@@ -26,7 +26,6 @@ public class Mapper {
                 .status(order.getStatus())
                 .people_count(order.getPeople_count())
                 .timestamp(order.getTimestamp())
-                //don't like this part
                 .karaokeDTO(order.getKaraoke() == null ? null : mapToKaraokeDTO(order.getKaraoke()))
                 .realTableDTO(order.getRealTable() == null ? null : mapToRealTableDTO(order.getRealTable()))
                 .build();
@@ -47,7 +46,6 @@ public class Mapper {
                 .timestamp(order.getTimestamp())
                 .people_count(order.getPeople_count())
                 .status(order.getStatus())
-                //don't like this part
                 .karaoke(order.getKaraoke() == null ? null : mapToKaraokeDTO(order.getKaraoke()))
                 .table(order.getRealTable() == null ? null : mapToRealTableDTO(order.getRealTable()))
                 .build();
